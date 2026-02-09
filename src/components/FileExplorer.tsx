@@ -261,7 +261,13 @@ export default function FileExplorer() {
                             <div className="w-16 h-16 bg-white border border-slate-100 rounded-2xl flex items-center justify-center shadow-sm">
                                 <Upload className="w-8 h-8 text-slate-200" />
                             </div>
-                            <p className="text-sm font-medium">Upload or select a disk to browse</p>
+                            <div className="text-center">
+                                <p className="text-sm font-medium">Upload or select a disk to browse</p>
+                                <div className="mt-6 p-4 border border-slate-100 rounded-xl bg-slate-50/50 max-w-xs mx-auto">
+                                    <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-2">How to generate data</p>
+                                    <code className="text-[11px] font-mono text-slate-600">tree -h disk &gt; file.txt</code>
+                                </div>
+                            </div>
                         </div>
                     ) : viewMode === 'list' ? (
                         <div className="bg-white border border-slate-100 rounded-xl shadow-sm overflow-hidden">
