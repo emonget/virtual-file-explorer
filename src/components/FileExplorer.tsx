@@ -301,7 +301,7 @@ export default function FileExplorer() {
                                 <p className="text-sm font-medium">Upload or select a disk to browse</p>
                                 <div className="mt-6 p-4 border border-slate-100 rounded-xl bg-slate-50/50 max-w-xs mx-auto">
                                     <p className="text-[10px] uppercase tracking-widest font-bold text-slate-400 mb-2">How to generate data</p>
-                                    <code className="text-[11px] font-mono text-slate-600">tree -h disk &gt; file.txt</code>
+                                    <code className="text-[11px] font-mono text-slate-600">tree -Dh disk &gt; file.txt</code>
                                 </div>
                             </div>
                         </div>
@@ -310,16 +310,17 @@ export default function FileExplorer() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-slate-50 text-[10px] uppercase tracking-widest text-slate-400 font-bold bg-slate-50/30">
-                                        <th className="px-6 py-2.5 w-[40%]">Name</th>
-                                        <th className="px-4 py-2.5 w-[12%]">Size</th>
-                                        <th className="px-4 py-2.5 w-[12%]">Type</th>
-                                        <th className="px-6 py-2.5 w-[36%]">Path</th>
+                                        <th className="px-6 py-2.5 w-[35%]">Name</th>
+                                        <th className="px-4 py-2.5 w-[10%]">Size</th>
+                                        <th className="px-4 py-2.5 w-[10%]">Type</th>
+                                        <th className="px-4 py-2.5 w-[15%]">Modified</th>
+                                        <th className="px-6 py-2.5 w-[30%]">Path</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-50">
                                     {currentNodes.length === 0 && (
                                         <tr>
-                                            <td colSpan={4} className="px-6 py-16 text-center text-slate-300 italic text-sm">
+                                            <td colSpan={5} className="px-6 py-16 text-center text-slate-300 italic text-sm">
                                                 No files or folders found
                                             </td>
                                         </tr>
@@ -350,6 +351,9 @@ export default function FileExplorer() {
                                             </td>
                                             <td className="px-4 py-1.5">
                                                 <span className="text-[11.5px] text-slate-400 capitalize">{node.type}</span>
+                                            </td>
+                                            <td className="px-4 py-1.5">
+                                                <span className="text-[11.5px] text-slate-500 font-medium">{node.date}</span>
                                             </td>
                                             <td className="px-6 py-1.5">
                                                 <span className="text-[10px] text-slate-400 font-mono truncate block max-w-sm">{node.path}</span>

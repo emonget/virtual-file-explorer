@@ -5,6 +5,7 @@ export interface FileNode {
     type: 'file' | 'directory';
     path: string;
     parentId: string | null;
+    date: string;
 }
 
 export interface ParseResult {
@@ -30,7 +31,17 @@ export const parseTreeOutput = (text: string): ParseResult => {
         const match = line.match(/^([| \t`-]*)\s*\[\s*([^\]]+)\]\s+(.+)$/);
         if (!match) continue;
 
-        const [_, prefix, size, name] = match;
+        const [_, prefix, bracketContentRaw, name] = match;
+        const bracketContent = bracketContentRaw.trim();
+        const firstSpaceIndex = bracketContent.indexOf(' ');
+
+        let size = bracketContent;
+        let date = '-';
+
+        if (firstSpaceIndex !== -1) {
+            size = bracketContent.substring(0, firstSpaceIndex).trim();
+            date = bracketContent.substring(firstSpaceIndex).trim();
+        }
 
         // Depth is based on the prefix length / 4 (as most tree outputs use 4 spaces or equivalent)
         // Actually, tree output indentation is more reliable by looking at where the brackets start
@@ -60,10 +71,11 @@ export const parseTreeOutput = (text: string): ParseResult => {
         const newNode: FileNode = {
             id,
             name: cleanName,
-            size: size.trim(),
+            size: size,
             type: 'file', // Default to file, will refine later
             path: fullPath,
             parentId: parent ? parent.id : null,
+            date: date,
         };
 
         nodes.push(newNode);
