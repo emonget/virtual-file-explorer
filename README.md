@@ -1,10 +1,7 @@
-# Virtual File Explorer
+
+# ![Virtual File Explorer](/public/favicon.svg)  Virtual File Explorer
 
 Browse your virtual disk files to find the file you are looking for before plugging several disks into your computer.
-
-![Virtual File Explorer](/public/favicon.svg)
-
-
 
 ## 🛠️ Getting Started
 
