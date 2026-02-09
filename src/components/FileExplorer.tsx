@@ -269,10 +269,10 @@ export default function FileExplorer() {
                             <table className="w-full text-left border-collapse">
                                 <thead>
                                     <tr className="border-b border-slate-50 text-[10px] uppercase tracking-widest text-slate-400 font-bold bg-slate-50/30">
-                                        <th className="px-6 py-4 w-[40%]">Name</th>
-                                        <th className="px-4 py-4 w-[12%]">Size</th>
-                                        <th className="px-4 py-4 w-[12%]">Type</th>
-                                        <th className="px-6 py-4 w-[36%]">Path</th>
+                                        <th className="px-6 py-2.5 w-[40%]">Name</th>
+                                        <th className="px-4 py-2.5 w-[12%]">Size</th>
+                                        <th className="px-4 py-2.5 w-[12%]">Type</th>
+                                        <th className="px-6 py-2.5 w-[36%]">Path</th>
                                     </tr>
                                 </thead>
                                 <tbody className="divide-y divide-slate-50">
@@ -289,29 +289,29 @@ export default function FileExplorer() {
                                             className="group hover:bg-blue-50/30 transition-colors cursor-pointer"
                                             onClick={() => node.type === 'directory' && navigateTo(node)}
                                         >
-                                            <td className="px-6 py-3.5">
+                                            <td className="px-6 py-1.5">
                                                 <div className="flex items-center gap-4">
                                                     <div className={cn(
-                                                        "p-1.5 rounded-lg transition-colors border",
+                                                        "p-1 rounded-lg transition-colors border",
                                                         node.type === 'directory'
                                                             ? "bg-blue-50 border-blue-100 text-blue-500"
                                                             : "bg-white border-slate-100 text-slate-400"
                                                     )}>
                                                         {node.type === 'directory' ? <Folder className="w-3.5 h-3.5 fill-current" /> : <File className="w-3.5 h-3.5" />}
                                                     </div>
-                                                    <span className="text-[13.5px] font-semibold text-slate-800 group-hover:text-blue-600 truncate">
+                                                    <span className="text-[13px] font-semibold text-slate-800 group-hover:text-blue-600 truncate">
                                                         {node.name}
                                                     </span>
                                                 </div>
                                             </td>
-                                            <td className="px-4 py-3.5">
-                                                <span className="text-[12px] text-slate-500 font-medium">{node.size}</span>
+                                            <td className="px-4 py-1.5">
+                                                <span className="text-[11.5px] text-slate-500 font-medium">{node.size}</span>
                                             </td>
-                                            <td className="px-4 py-3.5">
-                                                <span className="text-[12px] text-slate-400 capitalize">{node.type}</span>
+                                            <td className="px-4 py-1.5">
+                                                <span className="text-[11.5px] text-slate-400 capitalize">{node.type}</span>
                                             </td>
-                                            <td className="px-6 py-3.5">
-                                                <span className="text-[11px] text-slate-300 font-mono truncate block max-w-sm">{node.path}</span>
+                                            <td className="px-6 py-1.5">
+                                                <span className="text-[10px] text-slate-400 font-mono truncate block max-w-sm">{node.path}</span>
                                             </td>
                                         </tr>
                                     ))}
