@@ -24,10 +24,18 @@ export default defineConfig(({ mode }) => {
                 },
 
                 manifest: {
-                    name: env.VITE_PROJECT_NAME,
-                    short_name: env.VITE_PROJECT_NAME,
-                    description: env.VITE_PROJECT_DESC,
+                    name: 'Virtual File Explorer',
+                    short_name: 'FileExplorer',
+                    description: 'A virtual file storage explorer',
                     theme_color: '#ffffff',
+                    icons: [
+                        {
+                            src: 'favicon.svg',
+                            sizes: 'any',
+                            type: 'image/svg+xml',
+                            purpose: 'any'
+                        }
+                    ]
                 },
 
                 workbox: {
