@@ -7,7 +7,7 @@ import {
     Search,
     Upload,
     HardDrive,
-    Grid,
+    LayoutGrid,
     List as ListIcon,
     X
 } from 'lucide-react';
@@ -197,22 +197,21 @@ export default function FileExplorer() {
                         </div>
                     </div>
 
-                    <div className="flex items-center gap-1.5 border border-slate-200 rounded-lg p-1 bg-white shadow-sm">
+                    <div className="flex items-center border border-slate-100 rounded-lg bg-white overflow-hidden p-0.5 shadow-sm">
                         <button
                             onClick={() => setViewMode('grid')}
                             className={cn(
-                                "p-1 rounded transition-colors",
-                                viewMode === 'grid' ? "bg-blue-50 text-blue-600" : "text-slate-400 hover:text-slate-600"
+                                "p-1.5 rounded-md transition-all flex items-center justify-center min-w-[32px]",
+                                viewMode === 'grid' ? "bg-slate-50 text-blue-600 shadow-inner" : "text-slate-400 hover:text-slate-600"
                             )}
                         >
-                            <Grid className="w-4 h-4" />
+                            <LayoutGrid className="w-4 h-4" />
                         </button>
-                        <div className="w-[1px] h-4 bg-slate-200 mx-0.5" />
                         <button
                             onClick={() => setViewMode('list')}
                             className={cn(
-                                "p-1 rounded transition-colors",
-                                viewMode === 'list' ? "bg-blue-50 text-blue-600" : "text-slate-400 hover:text-slate-600"
+                                "p-1.5 rounded-md transition-all flex items-center justify-center min-w-[32px]",
+                                viewMode === 'list' ? "bg-slate-50 text-blue-600 shadow-inner" : "text-slate-400 hover:text-slate-600"
                             )}
                         >
                             <ListIcon className="w-4 h-4" />
