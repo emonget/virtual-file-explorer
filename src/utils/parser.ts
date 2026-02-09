@@ -51,11 +51,12 @@ export const parseTreeOutput = (text: string): ParseResult => {
         // Let's check for the "type" column in the screenshot. It says "File". 
         // Folders should probably be identified by whether they contain other items.
 
-        const id = crypto.randomUUID();
         const cleanName = name.trim();
         const parentPath = parent ? parent.path : '';
-        const fullPath = parentPath === '' ? cleanName : `${parentPath}/${cleanName}`;
+        // Ensure paths always start with / and don't have double //
+        const fullPath = parentPath === '' ? `/${cleanName}` : `${parentPath}/${cleanName}`.replace(/\/+/g, '/');
 
+        const id = crypto.randomUUID();
         const newNode: FileNode = {
             id,
             name: cleanName,

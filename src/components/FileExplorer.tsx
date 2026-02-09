@@ -64,10 +64,6 @@ export default function FileExplorer() {
         return activeDisk.childrenByParentId[currentFolderId] || [];
     }, [activeDisk, currentFolderId, deferredSearchQuery]);
 
-    const breadcrumbs = useMemo(() => {
-        if (!currentPath) return [];
-        return currentPath.split('/').filter(Boolean);
-    }, [currentPath]);
 
     const handleUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -83,10 +79,18 @@ export default function FileExplorer() {
                 ...result
             };
             setDisks(prev => [...prev, newDisk]);
+
+            // Auto-select and navigate if first disk
             if (!activeDiskId) {
                 setActiveDiskId(newDisk.id);
-                setCurrentPath('');
-                setCurrentFolderId(null);
+                // If only one root folder, go inside it automatically
+                if (newDisk.rootNodes.length === 1 && newDisk.rootNodes[0].type === 'directory') {
+                    setCurrentPath(newDisk.rootNodes[0].path);
+                    setCurrentFolderId(newDisk.rootNodes[0].id);
+                } else {
+                    setCurrentPath('');
+                    setCurrentFolderId(null);
+                }
             }
         };
         reader.readAsText(file);
@@ -94,8 +98,14 @@ export default function FileExplorer() {
 
     const navigateTo = (node: FileNode | null) => {
         if (!node) {
-            setCurrentPath('');
-            setCurrentFolderId(null);
+            // If we have a single root folder, we should go back to IT instead of the empty root
+            if (activeDisk && activeDisk.rootNodes.length === 1 && activeDisk.rootNodes[0].type === 'directory') {
+                setCurrentPath(activeDisk.rootNodes[0].path);
+                setCurrentFolderId(activeDisk.rootNodes[0].id);
+            } else {
+                setCurrentPath('');
+                setCurrentFolderId(null);
+            }
         } else {
             setCurrentPath(node.path);
             setCurrentFolderId(node.id);
@@ -109,7 +119,9 @@ export default function FileExplorer() {
             navigateTo(null);
             return;
         }
-        const node = activeDisk.nodesByPath[path];
+        // Normalize path to ensure it starts with / for lookup
+        const normalizedPath = path.startsWith('/') ? path : '/' + path;
+        const node = activeDisk.nodesByPath[normalizedPath];
         if (node && node.type === 'directory') navigateTo(node);
     };
 
@@ -151,8 +163,13 @@ export default function FileExplorer() {
                             key={disk.id}
                             onClick={() => {
                                 setActiveDiskId(disk.id);
-                                setCurrentPath('');
-                                setCurrentFolderId(null);
+                                if (disk.rootNodes.length === 1 && disk.rootNodes[0].type === 'directory') {
+                                    setCurrentPath(disk.rootNodes[0].path);
+                                    setCurrentFolderId(disk.rootNodes[0].id);
+                                } else {
+                                    setCurrentPath('');
+                                    setCurrentFolderId(null);
+                                }
                             }}
                             className={cn(
                                 "w-full text-left px-3 py-2.5 rounded-lg text-sm transition-all flex items-center gap-3",
@@ -238,24 +255,43 @@ export default function FileExplorer() {
                         <HardDrive className="w-4 h-4 text-slate-400" />
                         <span>{activeDisk?.name || 'Disk'}</span>
                     </button>
-                    {breadcrumbs.map((crumb, i) => (
-                        <div key={i} className="flex items-center gap-2">
-                            <ChevronRight className="w-3 h-3 text-slate-300" />
-                            <button
-                                onClick={() => navigateByPath('/' + breadcrumbs.slice(0, i + 1).join('/'))}
-                                className={cn(
-                                    "hover:text-blue-600 transition-colors max-w-[200px] truncate px-2 py-1 rounded-md",
-                                    i === breadcrumbs.length - 1 && "text-blue-600 font-semibold bg-blue-50"
-                                )}
-                            >
-                                {crumb}
-                            </button>
-                        </div>
-                    ))}
+                    {(() => {
+                        const fullSegments = currentPath.split('/').filter(Boolean);
+                        let displaySegments = [...fullSegments];
+                        let offset = 0;
+
+                        if (activeDisk && activeDisk.rootNodes.length === 1 &&
+                            activeDisk.rootNodes[0].type === 'directory') {
+                            const rootName = activeDisk.rootNodes[0].name.replace(/^\//, '');
+                            if (fullSegments[0] === rootName) {
+                                displaySegments = displaySegments.slice(1);
+                                offset = 1;
+                            }
+                        }
+
+                        return displaySegments.map((crumb, i) => {
+                            const actualIndex = i + offset;
+                            const breadcrumbPath = '/' + fullSegments.slice(0, actualIndex + 1).join('/');
+                            return (
+                                <div key={i} className="flex items-center gap-2">
+                                    <ChevronRight className="w-3 h-3 text-slate-300" />
+                                    <button
+                                        onClick={() => navigateByPath(breadcrumbPath)}
+                                        className={cn(
+                                            "hover:text-blue-600 transition-colors max-w-[200px] truncate px-2 py-1 rounded-md",
+                                            i === displaySegments.length - 1 && "text-blue-600 font-semibold bg-blue-50"
+                                        )}
+                                    >
+                                        {crumb}
+                                    </button>
+                                </div>
+                            );
+                        });
+                    })()}
                 </div>
 
                 {/* File List / Grid */}
-                <div className="flex-1 overflow-y-auto p-6">
+                <div className="flex-1 overflow-y-auto px-4 py-3">
                     {!activeDisk ? (
                         <div className="h-full flex flex-col items-center justify-center text-slate-300 gap-4">
                             <div className="w-16 h-16 bg-white border border-slate-100 rounded-2xl flex items-center justify-center shadow-sm">
