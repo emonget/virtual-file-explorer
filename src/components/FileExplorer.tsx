@@ -3,12 +3,12 @@ import {
     Folder,
     File,
     ChevronRight,
+    ChevronLeft,
     Search,
     Upload,
     HardDrive,
     Grid,
     List as ListIcon,
-    ArrowLeft,
     X
 } from 'lucide-react';
 import { clsx, type ClassValue } from 'clsx';
@@ -177,6 +177,7 @@ export default function FileExplorer() {
                             setSearchQuery('');
                             setCurrentPath('');
                             setCurrentFolderId(null);
+                            setActiveDiskId(null);
                         }}
                         className="p-1.5 hover:bg-slate-100 rounded-md text-slate-400 transition-colors"
                     >
@@ -220,26 +221,26 @@ export default function FileExplorer() {
                 </header>
 
                 {/* Breadcrumbs */}
-                <div className="h-12 border-b border-slate-100 bg-white flex items-center px-6 gap-3 text-[13px] text-slate-500 overflow-x-auto whitespace-nowrap scrollbar-hide">
+                <div className="h-12 border-b border-slate-100 bg-white flex items-center px-6 gap-2 text-[13px] text-slate-500 overflow-x-auto whitespace-nowrap scrollbar-hide">
                     <button
                         onClick={goBack}
                         disabled={!currentPath}
-                        className="p-1.5 hover:bg-slate-50 rounded-md disabled:opacity-20 disabled:hover:bg-transparent transition-colors"
+                        className="p-2 hover:bg-slate-50 rounded-md disabled:opacity-20 disabled:hover:bg-transparent transition-all group"
                     >
-                        <ArrowLeft className="w-4 h-4" />
+                        <ChevronLeft className="w-4 h-4 text-slate-900 group-hover:text-blue-600" />
                     </button>
 
-                    <div className="w-[1px] h-4 bg-slate-200 mx-1" />
+                    <div className="w-[1px] h-6 bg-slate-200 mx-2" />
 
                     <button
                         onClick={() => navigateTo(null)}
-                        className={cn("hover:text-blue-600 transition-colors flex items-center gap-2", !currentPath && "text-blue-600 font-medium")}
+                        className={cn("hover:text-blue-600 transition-colors flex items-center gap-2", !currentPath && "text-blue-600 font-semibold")}
                     >
                         <HardDrive className="w-4 h-4 text-slate-400" />
                         <span>{activeDisk?.name || 'Disk'}</span>
                     </button>
                     {breadcrumbs.map((crumb, i) => (
-                        <div key={i} className="flex items-center gap-3">
+                        <div key={i} className="flex items-center gap-2">
                             <ChevronRight className="w-3 h-3 text-slate-300" />
                             <button
                                 onClick={() => navigateByPath('/' + breadcrumbs.slice(0, i + 1).join('/'))}
