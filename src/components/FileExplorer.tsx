@@ -342,6 +342,23 @@ export default function FileExplorer() {
                         </div>
                     )}
                 </div>
+
+                {/* Footer Status Bar */}
+                {activeDisk && (
+                    <footer className="h-8 border-t border-slate-100 bg-white flex items-center px-6 gap-4 text-[10px] text-slate-400 font-medium">
+                        <div className="flex items-center gap-2">
+                            <span>{currentNodes.length} items</span>
+                        </div>
+                        <div className="w-[1px] h-3 bg-slate-200" />
+                        <div className="flex items-center gap-2">
+                            <span>Free Space: Virtual</span>
+                        </div>
+                        <div className="w-[1px] h-3 bg-slate-200" />
+                        <div className="flex items-center gap-2">
+                            <span>Disk created on 03/01/2026</span>
+                        </div>
+                    </footer>
+                )}
             </main>
         </div>
     );
